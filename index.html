@@ -1,13 +1,456 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>nalinali.space</title>
-    <script type="module" crossorigin src="./assets/index-dfGIa0nX.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DtYr560T.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: #f8f1e5;
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: "Microsoft YaHei", "SimSun", serif;
+        }
+
+        /* 信封视图 */
+        .envelope-view {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .envelope-view.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+
+        .triangle-area {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 33.3vh;
+            background: white;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            z-index: 1;
+        }
+
+        .lines-svg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 33.3vh;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .lines-svg line {
+            stroke: #d4a574;
+            stroke-width: 2;
+        }
+
+        .seal {
+            position: absolute;
+            top: 33.3vh; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: #c0392b;
+            border: 4px solid #8b0000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.3);
+            overflow: hidden;
+            z-index: 10;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .seal:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.3);
+        }
+        .seal:active { transform: translate(-50%, -50%) scale(0.95); }
+        .seal img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+        }
+        .seal::after {
+            content: '';
+            position: absolute;
+            top: 10%; left: 20%;
+            width: 30%; height: 20%;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            filter: blur(2px);
+        }
+
+        .hint-text {
+            position: absolute;
+            top: calc(33.3vh + 60px); left: 50%;
+            transform: translateX(-50%);
+            color: #8b4513;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            z-index: 5;
+            text-align: center;
+        }
+        .email-link {
+            color: #8b4513;
+            text-decoration: none;
+            border-bottom: 1px dashed #8b4513;
+            transition: all 0.3s ease;
+        }
+        .email-link:hover {
+            color: #c0392b;
+            border-bottom-color: #c0392b;
+        }
+
+        /* 信纸视图 */
+        .letter-view {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #fffef8;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+            overflow-y: auto;
+            z-index: 20;
+        }
+        .letter-view.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .letter-view::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 31px, #e8e4dc 31px, #e8e4dc 32px);
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .letter-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            min-height: 100vh;
+            z-index: 1;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px; right: 20px;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: #c0392b;
+            border: 3px solid #8b0000;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            z-index: 30;
+        }
+        .back-btn:hover { transform: scale(1.1) rotate(-90deg); }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #d4a574;
+        }
+        .letter-header h1 {
+            font-size: 2.5rem;
+            color: #5d4e37;
+            letter-spacing: 0.3rem;
+            margin-bottom: 10px;
+        }
+        .letter-header .date {
+            color: #8b7355;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        
+        /* IP 地址显示 */
+        .visitor-ip {
+            color: #c0392b;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            font-family: "Courier New", monospace;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 0.5s forwards;
+        }
+        .visitor-ip::before {
+            content: '📍 ';
+        }
+        .visitor-ip.loading {
+            color: #8b7355;
+        }
+
+        /* 音乐播放器 - 极简样式 */
+        .header-music {
+            margin-top: 15px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease 0.3s forwards;
+        }
+        .header-music iframe {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 100%;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 8px;
+            border-left: 4px solid #c0392b;
+            position: relative;
+            opacity: 0;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            color: #5d4e37;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::before {
+            content: '❧';
+            color: #c0392b;
+            font-size: 1.2rem;
+        }
+
+        .about-content {
+            color: #5d4e37;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+        .about-content p {
+            margin-bottom: 15px;
+            text-indent: 2em;
+        }
+
+        .friend-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .friend-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: #f8f1e5;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #5d4e37;
+            transition: all 0.3s ease;
+            border: 1px solid #e0d5c5;
+        }
+        .friend-link:hover {
+            background: #c0392b;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(192,57,43,0.3);
+        }
+        .friend-link .avatar {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: #d4a574;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .letter-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px dashed #d4a574;
+            color: #8b7355;
+            font-size: 0.9rem;
+        }
+        .wax-seal-small {
+            width: 60px; height: 60px;
+            margin: 20px auto;
+            border-radius: 50%;
+            background: #c0392b;
+            border: 3px solid #8b0000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            opacity: 0.8;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .letter-view.active .section {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .letter-view.active .section:nth-child(2) { animation-delay: 0.1s; }
+        .letter-view.active .section:nth-child(3) { animation-delay: 0.2s; }
+    </style>
+</head>
+<body>
+    <!-- 信封视图 -->
+    <div class="envelope-view" id="envelopeView">
+        <div class="triangle-area"></div>
+        <svg class="lines-svg" viewBox="0 0 100 33.3" preserveAspectRatio="none">
+            <line x1="0" y1="0" x2="50" y2="33.3" />
+            <line x1="100" y1="0" x2="50" y2="33.3" />
+        </svg>
+
+        <div class="seal" id="sealBtn" title="点击打开信件">
+            <img src="https://youke.xn--y7xa690gmna.cn/s1/2026/02/12/698d8f1ad8072.webp" alt="管理员头像">
+        </div>
+
+        <div class="hint-text">
+            <a href="mailto:3058388425@qq.com" class="email-link">Email Me</a>
+        </div>
+    </div>
+
+    <!-- 信纸视图 -->
+    <div class="letter-view" id="letterView">
+        <button class="back-btn" id="backBtn" title="返回信封">↺</button>
+        
+        <div class="letter-container">
+            <header class="letter-header">
+                <h1>Welcome</h1>
+                <div class="date" id="currentDate"></div>
+                <div class="visitor-ip loading" id="visitorIp">正在获取您的位置信息...</div>
+                
+                <!-- 音乐播放器 - 仅保留 iframe -->
+                <div class="header-music">
+                    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="400" height="65" 
+                        src="https://i.y.qq.com/n2/m/outchain/player/index.html?songid=569035572&songtype=0">
+                    </iframe>
+                </div>
+            </header>
+
+            <!-- 关于我 -->
+            <section class="section">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-content">
+                    <p>欢迎来到我的个人空间。这里是一个充满温度与故事的地方，就像一封封等待拆启的信件。</p>
+                    <p>我相信文字的力量，相信音乐能跨越时空，相信每一个链接都是一次美好的相遇。</p>
+                    <p>愿你能在这里找到共鸣，或是发现一些让你心动的事物。</p>
+                </div>
+            </section>
+
+            <!-- 友情链接 -->
+            <section class="section">
+                <h2 class="section-title">Recommended Sites</h2>
+                <div class="friend-links">
+                    <a href="https://yellow.nalinali.space" target="_blank" class="friend-link">
+                        <div class="avatar">📚</div>
+                        <span>网站导航</span>
+                    </a>
+                    <a href="https://qqimanz.com/" target="_blank" rel="noopener noreferrer" class="friend-link">
+                        <div class="avatar">🎨</div>
+                        <span>张亲亲的画</span>
+                    </a>
+                    <a href="https://yf2727.myportfolio.com/" target="_blank" class="friend-link">
+                        <div class="avatar">💻</div>
+                        <span>摄影师冯亦尧</span>
+                    </a>
+                    <a href="https://c6.y.qq.com/base/fcgi-bin/u?__=H6sb0MYuILrQ" target="_blank" class="friend-link">
+                        <div class="avatar">📷</div>
+                        <span>QQ音乐主页</span>
+                    </a>
+                </div>
+            </section>
+
+            <footer class="letter-footer">
+                <div class="wax-seal-small">✉</div>
+                <p>感谢你的到访</p>
+                <p style="margin-top: 10px; font-size: 0.8rem;">点击右上角按钮返回信封</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        const sealBtn = document.getElementById('sealBtn');
+        const backBtn = document.getElementById('backBtn');
+        const envelopeView = document.getElementById('envelopeView');
+        const letterView = document.getElementById('letterView');
+        const currentDate = document.getElementById('currentDate');
+        const visitorIp = document.getElementById('visitorIp');
+
+        // 设置日期
+        const now = new Date();
+        currentDate.textContent = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`;
+
+        // 获取访客 IP 地址
+        async function getVisitorIp() {
+            try {
+                // 使用 ipapi.co 获取 IP 信息（免费，无需密钥）
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                
+                if (data.ip) {
+                    const location = data.city && data.country_name 
+                        ? `${data.city}, ${data.country_name}`
+                        : data.country_name || '未知位置';
+                    visitorIp.textContent = `您的访问来自: ${data.ip} (${location})`;
+                    visitorIp.classList.remove('loading');
+                } else {
+                    visitorIp.textContent = '无法获取位置信息';
+                }
+            } catch (error) {
+                // 备用方案：使用 ipinfo.io
+                try {
+                    const backupResponse = await fetch('https://ipinfo.io/json');
+                    const backupData = await backupResponse.json();
+                    visitorIp.textContent = `您的访问来自: ${backupData.ip} (${backupData.city || '未知位置'})`;
+                    visitorIp.classList.remove('loading');
+                } catch (backupError) {
+                    visitorIp.textContent = '位置信息获取失败';
+                    visitorIp.style.color = '#8b7355';
+                }
+            }
+        }
+
+        // 页面加载完成后获取 IP
+        getVisitorIp();
+
+        // 切换视图
+        sealBtn.addEventListener('click', () => {
+            envelopeView.classList.add('hidden');
+            letterView.classList.add('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        backBtn.addEventListener('click', () => {
+            letterView.classList.remove('active');
+            envelopeView.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => { letterView.scrollTop = 0; }, 300);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && letterView.classList.contains('active')) {
+                backBtn.click();
+            }
+        });
+    </script>
+</body>
 </html>
