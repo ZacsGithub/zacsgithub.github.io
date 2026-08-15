@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rejuvenation of Beats</title>
-<!-- 网页图标：使用QQ头像API -->
 <link rel="icon" href="http://q2.qlogo.cn/headimg_dl?dst_uin=3058388425&spec=100&v=0.7726894129732835" type="image/jpeg">
 <style>
 /* ===== Reset & Base ===== */
@@ -80,7 +79,7 @@ img{max-width:100%;display:block}
 .hero::before{
   content:'';position:absolute;
   top:50%;left:50%;width:600px;height:600px;
-  transform:translate(-50%,-50%);
+  transform:translate(-50%, -50%);
   background:radial-gradient(circle,var(--accent-glow) 0%,transparent 60%);
   opacity:0.08;pointer-events:none;
 }
@@ -95,7 +94,6 @@ img{max-width:100%;display:block}
   width:100%;height:100%;object-fit:cover;
   filter:contrast(1.1) saturate(1.1) blur(0.5px) brightness(1.05);
   image-rendering:-webkit-optimize-contrast;
-  image-rendering:crisp-edges;
 }
 .hero-title{
   font-size:clamp(48px,10vw,120px);
@@ -150,18 +148,25 @@ img{max-width:100%;display:block}
   text-transform:uppercase;
 }
 
+/* ===== About ===== */
 .about-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
   gap:24px;
 }
 .about-card{
+  display:flex;flex-direction:column;
   background:var(--bg-elevated);
   border:1px solid var(--line);
   border-radius:16px;padding:36px 28px;
-  transition:border-color .3s,transform .3s;
+  transition:border-color .3s,transform .3s,background .3s;
+  cursor:pointer;
 }
-.about-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.about-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-4px);
+  background:linear-gradient(135deg,var(--bg-elevated) 0%,rgba(255,106,0,0.05) 100%);
+}
 .about-card-num{
   font-size:14px;font-weight:700;
   color:var(--accent);letter-spacing:2px;
@@ -172,32 +177,59 @@ img{max-width:100%;display:block}
 }
 .about-card-text{
   font-size:14px;color:var(--text-muted);line-height:1.7;
+  margin-bottom:16px;
 }
+.about-card-link{
+  font-size:13px;font-weight:600;
+  color:var(--accent);letter-spacing:1px;
+  display:flex;align-items:center;gap:6px;
+  transition:gap .3s;
+}
+.about-card:hover .about-card-link{gap:12px}
 
+/* ===== Gallery ===== */
 .gallery-wall{padding:100px 5%}
 .gallery-grid{
   max-width:1200px;margin:0 auto;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:24px;
+  grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
+  gap:32px;
 }
 .gallery-card{
+  display:flex;flex-direction:column;
   background:var(--bg-elevated);
   border:1px solid var(--line);
-  border-radius:16px;padding:48px 36px;
+  border-radius:16px;padding:60px 40px;
   text-align:center;
-  transition:border-color .3s,transform .3s;
+  transition:border-color .3s,transform .3s,background .3s;
+  cursor:pointer;
 }
-.gallery-card:hover{border-color:var(--accent);transform:translateY(-4px)}
-.gallery-card-icon{font-size:48px;margin-bottom:20px;opacity:0.8}
+.gallery-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-6px);
+  background:linear-gradient(135deg,var(--bg-elevated) 0%,rgba(255,106,0,0.06) 100%);
+  box-shadow:0 20px 60px rgba(255,106,0,0.1);
+}
+.gallery-card-icon{
+  font-size:64px;margin-bottom:24px;opacity:0.8;
+}
 .gallery-card-name{
-  font-size:22px;font-weight:800;margin-bottom:10px;
+  font-size:28px;font-weight:800;margin-bottom:10px;
 }
 .gallery-card-sub{
-  font-size:14px;color:var(--text-muted);
+  font-size:15px;color:var(--text-muted);
   letter-spacing:1px;line-height:1.7;
+  margin-bottom:20px;
 }
+.gallery-card-link{
+  font-size:14px;font-weight:600;
+  color:var(--accent);letter-spacing:2px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:gap .3s;
+}
+.gallery-card:hover .gallery-card-link{gap:16px}
 
+/* ===== Partners ===== */
 .partners{padding:100px 5%;text-align:center}
 .partners-grid{
   max-width:900px;margin:0 auto;
@@ -224,27 +256,11 @@ img{max-width:100%;display:block}
   letter-spacing:1px;
 }
 
+/* ===== Footer ===== */
 .footer{padding:60px 5% 40px;border-top:1px solid var(--line)}
-.footer-inner{
-  max-width:1200px;margin:0 auto;
-  display:flex;flex-wrap:wrap;
-  justify-content:space-between;
-  align-items:flex-start;gap:40px;
-}
-.footer-col{min-width:200px}
-.footer-col-title{
-  font-size:12px;font-weight:700;
-  letter-spacing:3px;text-transform:uppercase;
-  color:var(--accent);margin-bottom:16px;
-}
-.footer-col-links{display:flex;flex-direction:column;gap:8px}
-.footer-col-links a{
-  font-size:14px;color:var(--text-muted);transition:color .3s;
-}
-.footer-col-links a:hover{color:var(--accent)}
 .footer-bottom{
-  margin-top:48px;padding-top:24px;
-  border-top:1px solid var(--line);
+  max-width:1200px;margin:0 auto;
+  padding-top:24px;border-top:1px solid var(--line);
   display:flex;justify-content:space-between;
   align-items:center;flex-wrap:wrap;gap:16px;
 }
@@ -256,6 +272,8 @@ img{max-width:100%;display:block}
   .hero{padding:100px 5% 40px}
   .section{padding:80px 5%}
   .manifesto{padding:80px 5%}
+  .about-grid{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:1fr}
 }
 
 .reveal{opacity:1;transform:translateY(0)}
@@ -271,7 +289,6 @@ img{max-width:100%;display:block}
 </div>
 
 <nav class="nav">
-  <!-- 导航栏图标：使用QQ头像API -->
   <div class="nav-logo"><img src="http://q2.qlogo.cn/headimg_dl?dst_uin=3058388425&spec=100&v=0.7726894129732835" alt="ROB" style="width:28px;height:28px;border-radius:50%;vertical-align:middle;"></div>
   <div class="nav-links">
     <a href="#home">Home</a>
@@ -283,17 +300,16 @@ img{max-width:100%;display:block}
 
 <section class="hero" id="home">
   <div class="hero-avatar">
-  <!-- 主页头像：使用自定义图片URL（可随时更换） -->
     <img src="https://i.imgs.ovh/2026/08/14/63592c29442e08cc7e399fbb04702153.jpg" alt="Rejuvenation of Beats">
   </div>
   <h1 class="hero-title">Rejuvenation<br>of Beats</h1>
-  <p class="hero-sub">节&nbsp;·&nbsp;奏&nbsp;·&nbsp;复·&nbsp;兴</p>
+  <p class="hero-sub">节 &nbsp;·&nbsp; 奏 &nbsp;·&nbsp; 复 &nbsp;·&nbsp; 兴</p>
 </section>
 
 <section class="manifesto reveal">
   <div class="manifesto-quote">
-    <span class="highlight">以法之基</span>，<br>
-    探索属于自己的<span class="highlight">节拍</span>。
+    <span class="highlight">以法之名</span>，<br>
+    定义属于自己的<span class="highlight">节拍</span>。
   </div>
   <div class="manifesto-year">— Rejuvenation of Beats —</div>
 </section>
@@ -306,21 +322,24 @@ img{max-width:100%;display:block}
     这里记录着一段关于「重获新生」的旅程。
   </p>
   <div class="about-grid">
-    <div class="about-card reveal">
+    <a href="#gallery" class="about-card reveal">
       <div class="about-card-num">01</div>
       <div class="about-card-title">法学之路</div>
       <div class="about-card-text">从法条到案例，从理论到实践，每一步都是对正义节拍的重塑。</div>
-    </div>
-    <div class="about-card reveal">
+      <div class="about-card-link">探索 →</div>
+    </a>
+    <a href="#home" class="about-card reveal">
       <div class="about-card-num">02</div>
       <div class="about-card-title">个人主页</div>
       <div class="about-card-text">用极简的设计语言，记录一个法学生的思考、灵感与生活切片。</div>
-    </div>
-    <div class="about-card reveal">
+      <div class="about-card-link">回到主页 →</div>
+    </a>
+    <a href="https://blog.cili.kdns.fr" target="_blank" rel="noopener" class="about-card reveal">
       <div class="about-card-num">03</div>
       <div class="about-card-title">未来章节</div>
       <div class="about-card-text">更多作品、项目与经历将在未来陆续展开，敬请期待。</div>
-    </div>
+      <div class="about-card-link">前往博客 →</div>
+    </a>
   </div>
 </section>
 
@@ -329,25 +348,22 @@ img{max-width:100%;display:block}
     <div class="section-label">Gallery</div>
     <h2 class="section-title reveal">Works &amp; Moments</h2>
     <p class="section-text reveal">
-      灵感片段、作品与记忆在此汇聚。更多内容即将上架。
+      灵感片段、作品与记忆在此汇聚。点击分类探索更多内容。
     </p>
   </div>
   <div class="gallery-grid">
-    <div class="gallery-card reveal">
+    <a href="gallery_judicial.html" class="gallery-card reveal">
       <div class="gallery-card-icon">⚖️</div>
-      <div class="gallery-card-name">法律</div>
+      <div class="gallery-card-name">司法</div>
       <div class="gallery-card-sub">法理 · 案例 · 实务</div>
-    </div>
-    <div class="gallery-card reveal">
+      <div class="gallery-card-link">进入相册 →</div>
+    </a>
+    <a href="gallery_hobby.html" class="gallery-card reveal">
       <div class="gallery-card-icon">🎨</div>
       <div class="gallery-card-name">爱好</div>
       <div class="gallery-card-sub">音乐 · 阅读 · 生活</div>
-    </div>
-    <div class="gallery-card reveal">
-      <div class="gallery-card-icon">✍️</div>
-      <div class="gallery-card-name">笔记</div>
-      <div class="gallery-card-sub">思考 · 记录 · 沉淀</div>
-    </div>
+      <div class="gallery-card-link">进入相册 →</div>
+    </a>
   </div>
 </section>
 
