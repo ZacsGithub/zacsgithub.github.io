@@ -149,43 +149,18 @@ img{max-width:100%;display:block}
 }
 
 /* ===== About ===== */
-.about-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:24px;
+.about-body{max-width:660px}
+.about-body p{
+  font-size:17px;color:var(--text-muted);
+  line-height:2;margin-bottom:26px;
 }
-.about-card{
-  display:flex;flex-direction:column;
-  background:var(--bg-elevated);
-  border:1px solid var(--line);
-  border-radius:16px;padding:36px 28px;
-  transition:border-color .3s,transform .3s,background .3s;
-  cursor:pointer;
+.about-body p:last-child{margin-bottom:0}
+.about-body .about-lead{
+  font-size:21px;font-weight:600;
+  color:var(--text);line-height:1.75;
+  letter-spacing:-0.2px;margin-bottom:28px;
 }
-.about-card:hover{
-  border-color:var(--accent);
-  transform:translateY(-4px);
-  background:linear-gradient(135deg,var(--bg-elevated) 0%,rgba(255,106,0,0.05) 100%);
-}
-.about-card-num{
-  font-size:14px;font-weight:700;
-  color:var(--accent);letter-spacing:2px;
-  margin-bottom:16px;
-}
-.about-card-title{
-  font-size:22px;font-weight:800;margin-bottom:12px;
-}
-.about-card-text{
-  font-size:14px;color:var(--text-muted);line-height:1.7;
-  margin-bottom:16px;
-}
-.about-card-link{
-  font-size:13px;font-weight:600;
-  color:var(--accent);letter-spacing:1px;
-  display:flex;align-items:center;gap:6px;
-  transition:gap .3s;
-}
-.about-card:hover .about-card-link{gap:12px}
+.about-body em{font-style:normal;color:var(--accent);font-weight:700}
 
 /* ===== Gallery ===== */
 .gallery-wall{padding:100px 5%}
@@ -261,18 +236,18 @@ img{max-width:100%;display:block}
 .footer-bottom{
   max-width:1200px;margin:0 auto;
   padding-top:24px;border-top:1px solid var(--line);
-  display:flex;justify-content:space-between;
+  display:flex;justify-content:center;
   align-items:center;flex-wrap:wrap;gap:16px;
 }
-.footer-tagline{font-size:18px;font-weight:800;letter-spacing:1px}
-.footer-copy{font-size:12px;color:var(--text-muted)}
+.footer-copy{font-size:12px;color:var(--text-muted);letter-spacing:1px}
 
 @media(max-width:768px){
   .nav-links{display:none}
   .hero{padding:100px 5% 40px}
   .section{padding:80px 5%}
   .manifesto{padding:80px 5%}
-  .about-grid{grid-template-columns:1fr}
+  .about-body p{font-size:16px;line-height:1.95}
+  .about-body .about-lead{font-size:19px}
   .gallery-grid{grid-template-columns:1fr}
 }
 
@@ -316,30 +291,31 @@ img{max-width:100%;display:block}
 
 <section class="section" id="about">
   <div class="section-label">About</div>
-  <h2 class="section-title reveal">A Law Student,<br>By Any Other Name.</h2>
-  <p class="section-text reveal">
-    在法律的世界中寻找节奏，在文字的逻辑里发现节拍。<br>
-    这里记录着一段关于「重获新生」的旅程。
-  </p>
-  <div class="about-grid">
-    <a href="#gallery" class="about-card reveal">
-      <div class="about-card-num">01</div>
-      <div class="about-card-title">法学之路</div>
-      <div class="about-card-text">从法条到案例，从理论到实践，每一步都是对正义节拍的重塑。</div>
-      <div class="about-card-link">探索 →</div>
-    </a>
-    <a href="#home" class="about-card reveal">
-      <div class="about-card-num">02</div>
-      <div class="about-card-title">个人主页</div>
-      <div class="about-card-text">用极简的设计语言，记录一个法学生的思考、灵感与生活切片。</div>
-      <div class="about-card-link">回到主页 →</div>
-    </a>
-    <a href="https://blog.cili.kdns.fr" target="_blank" rel="noopener" class="about-card reveal">
-      <div class="about-card-num">03</div>
-      <div class="about-card-title">未来章节</div>
-      <div class="about-card-text">更多作品、项目与经历将在未来陆续展开，敬请期待。</div>
-      <div class="about-card-link">前往博客 →</div>
-    </a>
+  <h2 class="section-title reveal">Structure<br>&amp; Groove.</h2>
+  <div class="about-body reveal">
+    <p class="about-lead">如果只能用一句话介绍自己：我在各种系统里找节奏。</p>
+    <p>
+      我着迷的东西看起来毫不相干——法条、引擎、R&amp;B 的鼓点、凌晨还在跑的代码。
+      但它们其实都在回答同一个问题：一个系统，怎么在约束里跑出好看的东西。
+    </p>
+    <p>
+      看 F1 和 MotoGP，我从来不是看谁更快。是刹车点晚的那三米，是进站两秒里人和机器的信任，
+      是同一条走线重复一万次之后长出来的手感。R&amp;B 恰好相反，它不赶时间：
+      把情绪拖长，让留白比填满更重要。
+    </p>
+    <p>
+      编程是我和世界说话的方式。自然语言可以含糊，代码不行——它要么跑通，要么报错，
+      中间没有情面可讲。这种诚实让人上瘾。
+    </p>
+    <p>
+      我信规则，因为规则让事情变得可预期；但我不觉得规则本身有多神圣，它存在的理由是<em>人</em>。
+      所以比起显得聪明，我更在意一件事有没有被讲清楚。也讨厌把简单的事说复杂——
+      那通常意味着还没想明白。
+    </p>
+    <p>
+      这个主页放着我的相册、写下的字，和一些还没做完的东西。
+      Rejuvenation of Beats——<em>复兴</em>不是推倒重来，是让旧的东西被重新听见一次。
+    </p>
   </div>
 </section>
 
@@ -368,17 +344,12 @@ img{max-width:100%;display:block}
 </section>
 
 <section class="partners" id="links">
-  <div class="section-label">Links &amp; Friends</div>
-  <h2 class="section-title reveal">Partners &amp; Socials</h2>
+  <div class="section-label">Links &amp; Contact</div>
+  <h2 class="section-title reveal">Socials &amp; Contact</h2>
   <p class="section-text reveal" style="text-align:center;margin-left:auto;margin-right:auto;">
-    友情链接与社交平台。在这里发现有趣的灵魂。
+    社交媒体与联系方式。在这里找到我。
   </p>
   <div class="partners-grid">
-    <a href="https://qqimanz.com/" class="partner-card reveal" target="_blank" rel="noopener">
-      <div class="partner-card-icon">🎨</div>
-      <div class="partner-card-name">张亲亲的画</div>
-      <div class="partner-card-sub">友情链接</div>
-    </a>
     <a href="https://weibo.com/u/7690266376" class="partner-card reveal" target="_blank" rel="noopener">
       <div class="partner-card-icon">📱</div>
       <div class="partner-card-name">Weibo</div>
@@ -414,7 +385,6 @@ img{max-width:100%;display:block}
 
 <footer class="footer">
   <div class="footer-bottom">
-    <div class="footer-tagline">Always bringing the fight.</div>
     <div class="footer-copy">&copy; 2026 Rejuvenation of Beats. All rights reserved.</div>
   </div>
 </footer>
