@@ -149,21 +149,25 @@ img{max-width:100%;display:block}
 }
 
 /* ===== About ===== */
-.about-body{max-width:none}
+#about{text-align:center}
+.about-body{
+  max-width:680px;margin:0 auto;
+}
 .about-body p{
   font-size:18px;color:var(--text-muted);
   line-height:1.95;margin-bottom:28px;
 }
 .about-body p:last-child{margin-bottom:0}
 .about-body .about-lead{
-  font-size:21px;font-weight:600;
-  color:var(--text);line-height:1.75;
-  letter-spacing:-0.2px;margin-bottom:28px;
+  font-size:18px;font-weight:700;
+  color:var(--text);line-height:1.95;
+  margin-bottom:28px;
 }
 .about-body em{font-style:normal;color:var(--accent);font-weight:700}
 
 /* ===== Gallery ===== */
-.gallery-wall{padding:100px 5%}
+.gallery-wall{padding:100px 5%;text-align:center}
+.gallery-wall .section-text{margin:0 auto 48px}
 .gallery-grid{
   max-width:1200px;margin:0 auto;
   display:grid;
@@ -247,7 +251,7 @@ img{max-width:100%;display:block}
   .section{padding:80px 5%}
   .manifesto{padding:80px 5%}
   .about-body p{font-size:16px;line-height:1.95}
-  .about-body .about-lead{font-size:19px}
+  .about-body .about-lead{font-size:16px}
   .gallery-grid{grid-template-columns:1fr}
 }
 
@@ -291,7 +295,7 @@ img{max-width:100%;display:block}
 
 <section class="section" id="about">
   <div class="section-label">About</div>
-  <h2 class="section-title reveal">Structure<br>&amp; Groove.</h2>
+  <h2 class="section-title reveal">Structure &amp; Groove.</h2>
   <div class="about-body reveal">
     <p class="about-lead">如果只能用一句话介绍自己：我在各种系统里找节奏。</p>
     <p>
@@ -305,12 +309,12 @@ img{max-width:100%;display:block}
     </p>
     <p>
       编程是我和世界说话的方式。自然语言可以含糊，代码不行——它要么跑通，要么报错，
-      中间没有情面可讲。这种诚实让人上瘾。
+      中间没有情面可讲。这种诚实让人上瘾，也慢慢成了我的判断标准：比起显得聪明，
+      我更在意一件事有没有被讲清楚。
     </p>
     <p>
       我信规则，因为规则让事情变得可预期；但我不觉得规则本身有多神圣，它存在的理由是<em>人</em>。
-      所以比起显得聪明，我更在意一件事有没有被讲清楚。也讨厌把简单的事说复杂——
-      那通常意味着还没想明白。
+      所以我也讨厌把简单的事说复杂——那通常意味着还没想明白。
     </p>
     <p>
       这个主页放着我的相册、写下的字，和一些还没做完的东西。
